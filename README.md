@@ -1,75 +1,35 @@
-# Nuxt 3 Minimal Starter
+# Список задач (Frontend Nuxt/Vue)
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+### Обзор
+* Описание работы
+* Используемые технологии
+* Описание страниц
+* Установка и запуск проекта
 
-## Setup
+**Описание**
 
-Make sure to install the dependencies:
+Проект список задач.
 
-```bash
-# npm
-npm install
+Frontend включает: Список задач с возможностью добавления новых, удаления и редактирования. 
+Также есть поиск и фильтор по категории. Возможность пометить задачу как решенную.
 
-# pnpm
-pnpm install
+**Используемые технологии**
 
-# yarn
-yarn install
+* Nuxt3
+* Vue3 (Composition API)
+* Pinia 
+* TypeScript
 
-# bun
-bun install
-```
+**Описание страниц**
 
-## Development Server
+/tasks - страница со всеми задачами
+/tasks/[id] - страница для получения задачи по id
 
-Start the development server on `http://localhost:3000`:
+### Установка и запуск проекта
 
-```bash
-# npm
-npm run dev
+`npm install` — устанавливает необходимые пакеты
 
-# pnpm
-pnpm run dev
+`npm run dev` — запуск проекта
 
-# yarn
-yarn dev
+`npm run build` — сборка проекта
 
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
