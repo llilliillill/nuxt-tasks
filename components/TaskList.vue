@@ -1,28 +1,32 @@
 <template>
-    <section v-if="store.tasks.length">
-        <task-item 
-            v-for="task in store.getSortedAndSearchedTasks()"
-            :showButtons="true"
-            :task="task"
-        />
+    <section v-if="tasks.length">
+        <ul class="task-list">
+            <TaskItem 
+                v-for="task in tasks"
+                :task="task"
+            />
+        </ul>
     </section>
 
     <section v-else>
-        <h4 class="error">Нет задач</h4>
+        <Heading class="heading">
+            Нет задач
+        </Heading>
     </section>
 </template>
 
 <script lang="ts" setup>
-    const store = useTaskStore()
+    defineProps<{
+        tasks: object[]
+    }>()
 </script>
 
 <style scoped>
-    ul {
+    .task-list {
         list-style-type: none;
     }
 
-    .error {
-        color: red;
+    .heading {
         text-align: center;
     }
 </style>

@@ -6,12 +6,7 @@
   </section>
 </template>
 
-<script lang="ts" setup>
-
-</script>
-
 <style>
-  /* Анимация перехода по страницам */
   .page-enter-active,
   .page-leave-active {
     transition: all 0.4s;

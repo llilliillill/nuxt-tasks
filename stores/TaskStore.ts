@@ -15,7 +15,7 @@ export const useTaskStore = defineStore('TaskStore', () => {
         text: ''
     })
 
-    const taskError = ref<TaskForm>({
+    const error = ref<TaskForm>({
         title: '',
         text: ''
     })
@@ -25,13 +25,11 @@ export const useTaskStore = defineStore('TaskStore', () => {
         select: 'all'
     })
 
-    const idEditTask = ref<Number | null>(0)
-
+    const idEditTask = ref<Number | null>(null)
     const showTaskForm = ref<Boolean>(false)
-
     const loading = ref<Boolean>(false)
 
-    // Делаем текст задачи зачеркнутым, если status задачи true (выполнено)
+    // Делаем текст задачи зачеркнутым, если status задачи true (завершено)
     const getTextDecor = (status: Boolean) => {
         let style = { textDecoration: 'none' }
         if (status) style.textDecoration = 'line-through';
@@ -55,60 +53,68 @@ export const useTaskStore = defineStore('TaskStore', () => {
         })
     }
 
-    // Поиск задач с сортировкой
-    const getSortedAndSearchedTasks = () => {
+    // Получить задачи с сортировкой
+    const getTasks = () => {
         return getSortedTasks().filter((task: Task) => 
-            task.title.toLowerCase().includes(query.value.search.toLowerCase().trim())
+            task.title.toLowerCase().includes(
+                query.value.search.toLowerCase().trim()
+            )
         )
     }
 
     // Изменяем статус задачи при нажатии на checkbox
-    const changeTaskStatus = (idTask: Number) => {
+    const setTaskStatus = (idTask: Number) => {
         tasks.value.map((task: Task) => {
             if (task.id === idTask) task.status = !task.status;
         })
     }
 
     // Получить задачу по id
-    const getTaskById = (idTask: Number) => {
+    const getTaskById = (idTask: number) => {
         return tasks.value.filter((task: Task) => task.id == idTask)[0]
     }
 
-    // Добавить задачу
-    const taskAdd = () => {
+    const validation = () => {
         if (task.value.title === '') {
-            taskError.value.title = 'Заполните название'
+            error.value.title = 'Заполните название'
         } else {
-            taskError.value.title = ''
+            error.value.title = ''
         }
 
         if (task.value.text === '') {
-            taskError.value.text = 'Заполните описание'
+            error.value.text = 'Заполните описание'
         } else {
-            taskError.value.text = ''
+            error.value.text = ''
         }
 
-        if (taskError.value.title === '' && 
-            taskError.value.text === '') {
+        return error.value.title === '' && 
+               error.value.text === ''
+    }
 
+    // Очистить форму
+    const clearForm = () => {
+        task.value = { 
+            title: '', 
+            text: ''
+        }
+    }
+
+    // Добавить задачу
+    const addTask = () => {
+        if (validation()) {
             tasks.value.push({
                 id: Date.now(),
                 title: task.value.title,
                 text: task.value.text,
                 status: false
             })
-
-            task.value = { 
-                title: '', 
-                text: ''
-            }
-            
+            clearForm()
             showTaskForm.value = false
         }
     }
 
     // Изменить задачу
-    const taskEdit = () => {
+    const editTask = () => {
         tasks.value = tasks.value.map((item: Task) => { 
             if (item.id === idEditTask.value) {
                 return { ...item, ...task.value }
@@ -116,27 +122,24 @@ export const useTaskStore = defineStore('TaskStore', () => {
                 return item
             }
         })
-        openTaskForm()
+        onTaskForm()
     }
 
     // Открыть/закрыть модальное окно добавления задачи
-    const openTaskForm = (objTask?: Task) => {
+    const onTaskForm = (objTask?: Task) => {
         if (objTask) {
             idEditTask.value = objTask.id
             task.value.title = objTask.title
             task.value.text = objTask.text
         } else {
             idEditTask.value = null
-            task.value = { 
-                title: '', 
-                text: '', 
-            }
+            clearForm()
         }
         showTaskForm.value = !showTaskForm.value
     }
 
     // Удалить задачу
-    const taskDelete = (idTask: Number) => {
+    const deleteTask = (idTask: Number) => {
         tasks.value = tasks.value.filter((task: Task) => task.id !== idTask)
     }
     
@@ -144,18 +147,18 @@ export const useTaskStore = defineStore('TaskStore', () => {
         task,
         tasks,
         query,
-        taskAdd,
+        error,
+        addTask,
         loading,
-        taskDelete,
-        taskEdit,
-        taskError,
+        getTasks,
+        editTask,
+        deleteTask,
         idEditTask,
-        showTaskForm,
-        openTaskForm,
+        onTaskForm,
         getTaskById,
+        showTaskForm,
         getTextDecor,
-        getSortedTasks,
-        changeTaskStatus,
-        getSortedAndSearchedTasks
+        setTaskStatus,
+        getSortedTasks
     }
 })

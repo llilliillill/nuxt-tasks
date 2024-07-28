@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   app: {
-    baseURL: '/nuxt-tasks/',
+    baseURL: '/',
     buildAssetsDir: 'assets',
     head: {
       charset: 'utf-8',

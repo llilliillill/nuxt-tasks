@@ -4,41 +4,48 @@
             <title>Задачи</title>
         </head>
 
-        <task-form v-show="store.showTaskForm" />
+        <TaskForm 
+            v-show="store.showTaskForm"
+        />
 
-        <header>
-            <span class="title">Задачи:</span>
-            <button-green 
-                class="add-task" 
-                @click="store.openTaskForm()"
-            >+ Добавить</button-green>
-        </header>
+        <div class="body">
+            <Heading class="heading">
+                Задачи:
+            </Heading>
 
-        <task-filter />
-        <task-list />
+            <Button @click="store.onTaskForm()">
+                + Добавить
+            </Button>
+        </div>
+
+        <TaskFilter 
+            :query="store.query"
+            :sort="store.getSortedTasks"
+        />
+
+        <TaskList 
+            :tasks="store.getTasks()" 
+        />
     </section>
 
     <section v-else>
-        <loader />
+        <Loader />
     </section>
 </template>
 
 <script lang="ts" setup>
     const store = useTaskStore()
-    onMounted(() => { 
-        store.loading = true
-    })
+    onMounted(() => store.loading = true)
 </script>
 
 <style scoped>
-    header {
+    .body {
         margin: 15px 0;
         display: flex;
-    }
+        align-items: center;
+    } 
 
-    .title {
-        font-weight: bold;
-        font-size: 20px;
+    .heading {
         flex: 1;
     }
 </style>

@@ -1,60 +1,54 @@
 <template>
     <li>
-        <input 
-            class="checkbox"
+        <Checkbox
             type="checkbox" 
-            @change="store.changeTaskStatus(task.id)" 
-            :disabled="!showButtons"
+            class="checkbox"
+            @change="store.setTaskStatus(task.id)" 
+            :disabled="!buttons"
             :checked="task.status"
-        >
+        />
 
         <div class="content">
-            <nuxt-link 
+            <NuxtLink 
                 class="title" 
                 :to="`/tasks/${ task.id }`"
                 :style="store.getTextDecor(task.status)" 
             >
                 {{ task.title }}
-            </nuxt-link>
+            </NuxtLink>
 
-            <span 
-                class="task-text" 
-                :style="store.getTextDecor(task.status)"
-            >
+            <span :style="store.getTextDecor(task.status)">
                 {{ task.text }}
             </span>
         </div>
 
-        <button-white
-            v-if="showButtons"
-            @click="store.openTaskForm({
+        <Button
+            v-if="buttons"
+            @click="store.onTaskForm({
                 id: task.id,
                 title: task.title,
                 text: task.text,
                 status: task.status,
             })"
-        >✎</button-white>
+        >✎</Button>
 
-        <button-white 
-            v-if="showButtons"
-            @click="store.taskDelete(task.id)"
-        >✖</button-white>
+        <Button 
+            v-if="buttons"
+            @click="store.deleteTask(task.id)"
+        >✖</Button>
     </li>
 </template>
 
 <script lang="ts" setup>
-    defineProps({
-        task: {
-            type: Object,
-            required: true
-        },
-        showButtons: {
-            type: Boolean,
-            required: true
-        }
-    })
-
     const store = useTaskStore()
+    withDefaults(
+        defineProps<{
+            task: object,
+            buttons?: boolean
+        }>(),{
+            buttons: true
+        }
+    )
 </script>
 
 <style scoped>
@@ -65,11 +59,6 @@
         padding: 5px;
         display: flex;
         align-items: center;
-    }
-
-    .checkbox {
-        zoom: 2;
-        cursor: pointer;
     }
 
     .content {

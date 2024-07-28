@@ -1,12 +1,15 @@
 <template>
     <section>
-        <input 
-            v-focus
+        <Input 
             type="search"
-            v-model="store.query.search" 
+            class="search"
+            v-model="query.search" 
             placeholder="найти по названию"
+        />
+        <select 
+            v-model="query.select"
+            @change="sort()" 
         >
-        <select @change="store.getSortedTasks()" v-model="store.query.select">
             <option value="all" selected>все</option>
             <option value="completed">завершеные</option>
             <option value="unfinished">незавершеные</option>
@@ -15,8 +18,10 @@
 </template>
 
 <script lang="ts" setup>
-    import { vFocus } from '@/directives/VFocus'
-    const store = useTaskStore()
+    defineProps<{
+        query: object,
+        sort: Function
+    }>()
 </script>
 
 <style scoped>
@@ -24,17 +29,14 @@
         display: flex;
     }
 
-    input {
-        flex: 1;
-        margin-bottom: 10px;
-        padding: 5px;
-        font-size: 18px;
-        outline: none;
-    }
-
     select {
         height: 35px;
         font-size: 18px;
         outline: none;
+        padding: 0 5px;
+    }
+
+    .search {
+        flex: 1;
     }
 </style>

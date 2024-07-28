@@ -1,51 +1,56 @@
 <template>
     <form @submit.prevent>
-        <section>
+        <div class="body">
             <div class="header">
-                <span v-if="store.idEditTask" class="title">Изменить задачу:</span>
-                <span v-else class="title">Добавить задачу:</span>
+                <Heading v-if="store.idEditTask">
+                    Изменить задачу:
+                </Heading>
 
-                <button-white @click="store.openTaskForm()">✖</button-white>
+                <Heading v-else>
+                    Добавить задачу:
+                </Heading>
+
+                <Button @click="store.onTaskForm()">
+                    ✖
+                </Button>
             </div>
 
-            <span class="error">{{ store.taskError.title }}</span>
-            <input 
-                v-focus
+            <Error>{{ store.error.title }}</Error>
+            <Input 
                 v-model="store.task.title"
                 type="text"
                 class="text-task" 
                 placeholder="Название"
-            >
+            />
 
-            <span class="error">{{ store.taskError.text }}</span>
-            <input 
+            <Error>{{ store.error.text }}</Error>
+            <Input 
                 v-model="store.task.text"
                 type="text"
                 class="text-task" 
                 placeholder="Описание"
-            >
+            />
 
-            <button-green
+            <Button
                 v-if="store.idEditTask"
                 class="edit-task" 
-                @click="store.taskEdit()"
+                @click="store.editTask()"
             >
                 Изменить
-            </button-green>
+            </Button>
 
-            <button-green
+            <Button
                 v-else
                 class="add-task" 
-                @click="store.taskAdd()"
+                @click="store.addTask()"
             >
                 Добавить
-            </button-green>
-        </section>
+            </Button>
+        </div>
     </form>
 </template>
 
 <script lang="ts" setup>
-    import { vFocus } from '@/directives/VFocus'
     const store = useTaskStore()
 </script>
 
@@ -58,10 +63,11 @@
         background: rgba(0, 0, 0, 0.5);
         position: fixed;
         display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    section {
-        margin: auto;
+    .body {
         background: white;
         border-radius: 3px;
         min-height: 50px;
@@ -76,10 +82,6 @@
         margin-bottom: 10px;
     }
 
-    .title {
-        font-weight: bold;
-    }
-
     .text-task {
         width: 300px;
         margin-bottom: 10px;
@@ -91,9 +93,5 @@
     .add-task,
     .edit-task {
         width: 100%;
-    }
-
-    .error {
-        color: red;
     }
 </style>

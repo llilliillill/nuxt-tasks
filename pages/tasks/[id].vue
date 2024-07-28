@@ -1,29 +1,26 @@
 <template>
     <section>
         <head>
-            <title>Задача №{{ $route.params.id }}</title>
+            <title>Задача №{{ id }}</title>
         </head>
 
-        <h1>Задача №{{ $route.params.id }}</h1>
-        <task-item 
-            :task="store.getTaskById(Number($route.params.id))" 
-            :showButtons="false"
+        <Headung>Задача №{{ id }}</Headung>
+        
+        <TaskItem 
+            :task="store.getTaskById(id)" 
+            :buttons="false"
         />
     </section>
 </template>
 
 <script lang="ts" setup>
+    const route = useRoute()
+    const id = Number(route.params.id)
+
+    const store = useTaskStore()
     definePageMeta({
         validate: async (route: any) => {
             return /^[0-9]+$/.test(route.params.id)
         }
     })
-    
-    const store = useTaskStore()
 </script>
-
-<style scoped>
-    h1 {
-        margin: 15px 0;
-    }
-</style>
